@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from random import random
 import time
+import json
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 bot = commands.Bot(command_prefix = '*', intents = intents)
@@ -45,5 +46,22 @@ async def rx(ctx, num, times = 1):
     time.sleep(5)
     await ctx.channel.purge(limit = 4)
 
+on_messagelist = ["sign up", "Sign Up", "SignUp", "signup", "su"]
+@bot.event
+async def on_message(message):
+    user = message.author
+    List = ''
+    print(message.id)
+    if "@!7904125296367370" in message.content:
+        string = message.content[23:]
+        if string in on_messagelist:
+            print("Found sign up request")
+            with open("signup.json", 'r') as f:
+                List = json.load(f)
+                List[message.id] = 'yes'
+            with open("signup.json", 'w') as f:
+                json.dump(List, f, indent=4)
 
-bot.run('NzkwNDEyNTI5NjM2NzM3MDY2.X-APCA.pCLiU6165sJr5_ddCDJ2QryRCK0')
+    await message.add_reaction('\U0001F44D')
+
+bot.run('NzkwNDEyNTI5NjM2NzM3MDY2.X-APCA.WlvOZFgugVayUiUTvjTQPGpX5uI')
