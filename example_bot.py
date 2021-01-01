@@ -49,19 +49,27 @@ async def rx(ctx, num, times = 1):
 on_messagelist = ["sign up", "Sign Up", "SignUp", "signup", "su"]
 @bot.event
 async def on_message(message):
-    user = message.author
+    print("______________________________________")
+    user = str(message.author.id)
+    author = str(message.author)
     List = ''
-    print(message.id)
     if "@!7904125296367370" in message.content:
         string = message.content[23:]
         if string in on_messagelist:
             print("Found sign up request")
             with open("signup.json", 'r') as f:
                 List = json.load(f)
-                List[message.id] = 'yes'
+                if user in List:
+                    await message.add_reaction('\U0001F44D')
+                    List[user] = author
+                    print("Already in json")
+                else:
+                    List[user] = author
+                    print("Added to json")
+                    
             with open("signup.json", 'w') as f:
                 json.dump(List, f, indent=4)
-
-    await message.add_reaction('\U0001F44D')
-
-bot.run('NzkwNDEyNTI5NjM2NzM3MDY2.X-APCA.WlvOZFgugVayUiUTvjTQPGpX5uI')
+        await message.add_reaction('\U0001F44D')
+    
+#'NzkwNDEyNTI5NjM2NzM3MDY2.X-APCA.WBKqpbxf_m5vsrTl2Fl4daHYbt0'
+bot.run(#bot id)
