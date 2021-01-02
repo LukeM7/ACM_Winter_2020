@@ -46,7 +46,8 @@ async def rx(ctx, num, times = 1):
     time.sleep(5)
     await ctx.channel.purge(limit = 4)
 
-on_messagelist = ["sign up", "Sign Up", "SignUp", "signup", "su"]
+up_messagelist = ["sign up", "Sign Up", "SignUp", "signup", "su"]
+down_messagelist = ["drop out", "Drop Out", "DropOut", "dropout", "do"]
 @bot.event
 async def on_message(message):
     print("______________________________________")
@@ -55,13 +56,12 @@ async def on_message(message):
     List = ''
     if "@!7904125296367370" in message.content:
         string = message.content[23:]
-        if string in on_messagelist:
+        print("Message: " + string)
+        if string in up_messagelist:
             print("Found sign up request")
             with open("signup.json", 'r') as f:
                 List = json.load(f)
                 if user in List:
-                    await message.add_reaction('\U0001F44D')
-                    List[user] = author
                     print("Already in json")
                 else:
                     List[user] = author
@@ -69,7 +69,21 @@ async def on_message(message):
                     
             with open("signup.json", 'w') as f:
                 json.dump(List, f, indent=4)
+
+        elif string in down_messagelist:
+            print("Found quit request")
+            with open("signup.json", 'r') as f:
+                List = json.load(f)
+                if user not in List:
+                    print("Not found in json")
+                else:
+                    del List[user]
+                    print("Deleted from json")
+
+            with open("signup.json", 'w') as f:
+                json.dump(List, f, indent=4)
+
         await message.add_reaction('\U0001F44D')
+        
     
-#'NzkwNDEyNTI5NjM2NzM3MDY2.X-APCA.WBKqpbxf_m5vsrTl2Fl4daHYbt0'
-bot.run(#bot id)
+bot.run(#token goes here)
